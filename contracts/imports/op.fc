@@ -1,0 +1,4 @@
+const op::accept_funds = 0xa4d8086f;
+const op::admin_withdraw = 0x217e5898;
+const op::lock = 0x878f9b0e;
+const op::unlock = 0x6ae4b0ef;
