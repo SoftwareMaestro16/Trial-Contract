@@ -4,7 +4,6 @@ import { Main } from '../wrappers/Main';
 import '@ton/test-utils';
 import { compile } from '@ton/blueprint';
 
-
 describe('Main', () => {
     let code: Cell;
 
