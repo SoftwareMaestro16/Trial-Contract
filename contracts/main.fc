@@ -14,8 +14,7 @@
 
 #include "imports/stdlib.fc";
 #include "imports/op.fc";
-
-const int min_tons_for_storage = 500000000;
+#include "imports/messages.fc";
 
 global slice storage::owner_address;
 global int storage::is_locked?;
@@ -54,24 +53,12 @@ global int storage::is_locked?;
 
     if (op == op::accept_funds) {
         if (storage::is_locked? == 1) {
-            var msg = begin_cell()
-                      .store_uint(0x10, 6)
-                      .store_slice(sender) 
-                      .store_coins(msg_value)
-                      .store_uint(0, 107)
-                    .end_cell();
-            send_raw_message(msg, 64);
+            msg::send_bounce(sender, msg_value);
             throw(100);
         }
 
         if (msg_value < 2000000000) {
-            var msg = begin_cell()
-                      .store_uint(0x10, 6)
-                      .store_slice(sender) 
-                      .store_coins(msg_value)
-                      .store_uint(0, 107)
-                    .end_cell();
-            send_raw_message(msg, 64);
+            msg::send_bounce(sender, msg_value);
             throw(101);
         }
 
@@ -80,14 +67,7 @@ global int storage::is_locked?;
 
     if (op == op::admin_withdraw) {
         throw_unless(401, equal_slices(sender, storage::owner_address));
-        raw_reserve(min_tons_for_storage, 0);
-        var msg = begin_cell()
-                    .store_uint(0x10, 6) 
-                    .store_slice(storage::owner_address)
-                    .store_coins(0)
-                    .store_uint(0, 1 + 4 + 4 + 64 + 32 + 1 + 1)
-                  .end_cell();
-        send_raw_message(msg, 128);
+        msg::send_withdraw(storage::owner_address);
         
         return();
     }
