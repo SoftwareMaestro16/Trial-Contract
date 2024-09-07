@@ -91,6 +91,8 @@ global int storage::is_locked?;
     throw(0xfffff);
 }
 
+;; Get Methods
+
 (slice) get_owner() method_id {
     load_data();
     return storage::owner_address;

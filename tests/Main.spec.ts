@@ -4,7 +4,6 @@ import { Main } from '../wrappers/Main';
 import '@ton/test-utils';
 import { compile } from '@ton/blueprint';
 
-
 describe('Main', () => {
     let code: Cell;
 
@@ -130,7 +129,7 @@ describe('Main', () => {
         });
     });
 
-    it('should random user', async () => {
+    it('should withdraw random user', async () => {
         const sendAdminWithdraw = await main.sendAdminWithdraw
         (user.getSender(), toNano("1"));
         
